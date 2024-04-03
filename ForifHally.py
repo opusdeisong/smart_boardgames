@@ -4,15 +4,21 @@ import time
 from collections import deque
 
 # 일정 시간 내에 입력을 받는 함수
-def timed_input(timeout):
-    def input_thread(result):
-        result.append(input())
+class TimeoutError(Exception):
+    pass
 
-    result = []
-    thread = threading.Thread(target=input_thread, args=(result,))
-    thread.start()
-    thread.join(timeout)
-    return bool(result)
+
+def interrupt(_, __):
+    raise TimeoutError()
+
+
+def timed_input(timeout=1.0):
+    timer = threading.Timer(timeout, interrupt, args=(None, None))
+    try:
+        timer.start()
+        return input()
+    finally:
+        timer.cancel()
 
 # 플레이어 리스트
 PLAYERS = ['Adam', 'Brown', 'Cathy', 'User']
@@ -60,13 +66,45 @@ def play_game(players, hands):
         # 점수가 5점이 된 언어가 있는 경우
         if any(score == 5 for score in current_scores.values()):
             recent_cards.clear()
-            # 3초 내에 입력이 있으면 해당 플레이어가 승자, 그렇지 않으면 랜덤으로 승자 선정
-            winner_index = -1 if timed_input(3) else random.randint(0, len(hands) - 2)
-            hands[winner_index].extend(center_pile)
-            center_pile.clear()
-            current_scores = {language: 0 for language in LANGUAGES}
-            print(f"Winner is {players[winner_index]}")
+            try:
+                input_result = timed_input(1.5)
+            except TimeoutError:
+                input_result = False
 
+            if input_result:
+                winner_index = player_index
+                hands[winner_index].extend(center_pile)
+                center_pile.clear()
+                current_scores = {language: 0 for language in LANGUAGES}
+                print(f"Winner is {players[winner_index]}")
+            else:
+                winner_index = random.randint(0, len(hands) - 2)
+                hands[winner_index].extend(center_pile)
+                center_pile.clear()
+                current_scores = {language: 0 for language in LANGUAGES}
+                print(f"Winner is {players[winner_index]}")
+        else:
+            try:
+                wrong_input = timed_input(1.5)
+            except TimeoutError:
+                wrong_input = False
+
+            if wrong_input:
+                print(f"Player {players[-1]} pressed the bell at the wrong time!")
+                # 페널티 적용 (예: 해당 플레이어의 카드 한 장을 센터 파일에 추가)
+                if hands[player_index]:
+                    penalty_card = hands[player_index].pop()
+                    center_pile.append(penalty_card)
+                    print(f"Player {players[-1]} loses a card as a penalty.")
+                    if not hands[player_index]:
+                        print(f"Player {players[-1]} is out of the game!")
+                        if players[-1] == 'User':
+                            print("End of Game")
+                            exit()
+                        del hands[-1]
+                        del players[-1]
+                        num_players -= 1
+                        player_index = player_index % num_players
         # 현재 플레이어의 카드가 모두 소진된 경우
         if not hands[player_index]:
             print(f"Player {current_player} is out of the game!")
@@ -80,7 +118,6 @@ def play_game(players, hands):
         else:
             player_index = (player_index + 1) % num_players
 
-        time.sleep(2)
 
     # 게임 종료 시 최종 승자 출력
     print(f"Player {players[0]} wins the game!")
