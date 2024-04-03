@@ -61,7 +61,7 @@ def play_game(players, hands):
         if any(score == 5 for score in current_scores.values()):
             recent_cards.clear()
             # 3초 내에 입력이 있으면 해당 플레이어가 승자, 그렇지 않으면 랜덤으로 승자 선정
-            winner_index = player_index if timed_input(3) else random.randint(0, len(hands) - 2)
+            winner_index = -1 if timed_input(3) else random.randint(0, len(hands) - 2)
             hands[winner_index].extend(center_pile)
             center_pile.clear()
             current_scores = {language: 0 for language in LANGUAGES}
