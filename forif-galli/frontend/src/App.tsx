@@ -1,23 +1,24 @@
-import { useState } from "react";
-import "./App.css";
-import { Button } from "./components/ui/button";
+import { useEffect, useState } from "react";
+import InitialScreen from "./components/wrapper/initial-screen";
+import Root from "./routes/root";
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [showInitial, setShowInitial] = useState(false);
+  useEffect(() => {
+    const hasVisited = localStorage.getItem("hasVisited");
+
+    if (hasVisited !== "true") {
+      setShowInitial(true);
+      // Set the 'hasVisited' flag in localStorage
+      localStorage.setItem("hasVisited", "true");
+    }
+  }, []);
 
   return (
-    <div className="h-screen w-screen flex flex-col gap-4 justify-center items-center">
-      <h1 className="text-3xl">React-TailwindCSS-Typescript-Vite-shadcn/ui</h1>
-      <h1 className="text-5xl font-bold">{count}</h1>
-      <div className="flex flex-row gap-5">
-        <Button size={"icon"} onClick={() => setCount((count) => count + 1)}>
-          +
-        </Button>
-        <Button size={"icon"} onClick={() => setCount((count) => count - 1)}>
-          -
-        </Button>
-      </div>
-    </div>
+    <main className="main-screen">
+      {showInitial && <InitialScreen />}
+      <Root />
+    </main>
   );
 }
 
