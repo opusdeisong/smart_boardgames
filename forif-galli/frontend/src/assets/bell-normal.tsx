@@ -1,8 +1,8 @@
 import { SVGDef } from "@/types/svg";
-const Bell = ({
+const NormalBell = ({
   width = 300,
   height = 300,
-  strokeColor = "#000000",
+  color = "#000000",
   props,
 }: SVGDef) => (
   <svg
@@ -16,7 +16,7 @@ const Bell = ({
   >
     <defs>
       <style>
-        {`.cls-1{fill:none;stroke:${strokeColor};stroke-miterlimit:10;stroke-width:1.91px}`}
+        {`.cls-1{fill:none;stroke:${color};stroke-miterlimit:10;stroke-width:1.91px}`}
       </style>
     </defs>
     <path
@@ -26,4 +26,4 @@ const Bell = ({
     <path className="cls-1" d="M5.32 14.86h13.36v3.82H5.32z" />
   </svg>
 );
-export default Bell;
+export default NormalBell;

@@ -5,7 +5,7 @@ export default function Root() {
   return (
     <>
       <Navbar />
-      <div className="w-full">
+      <div className="w-full h-full">
         <Outlet />
       </div>
     </>

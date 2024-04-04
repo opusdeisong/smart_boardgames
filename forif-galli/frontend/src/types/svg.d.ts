@@ -1,7 +1,7 @@
 interface SVGDef {
   width?: number;
   height?: number;
-  strokeColor?: string;
+  color?: string;
   props?: React.SVGProps<SVGSVGElement>;
 }
 

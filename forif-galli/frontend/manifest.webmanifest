@@ -1,0 +1,22 @@
+{
+  "name": "스테이지",
+  "icons": [
+    {
+      "src": "/images/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "display": "fullscreen",
+  "start_url": "/",
+  "description": "누구나 작가가 될 수 있는 꿈의 공간 스테이지",
+  "background_color": "white",
+  "short_name": "short name",
+  "theme_color": "#FFBC00",
+  "orientation": "portrait"
+}
