@@ -1,0 +1,23 @@
+name: Sync Repositories
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source repository
+        uses: actions/checkout@v2
+        with:
+          ref: 'main'
+
+      - name: Push to destination repository
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          branch: 'main'
+          force: true
+          repository: standardwish/forif-gallie
