@@ -1,20 +1,22 @@
+import { useEffect, useState } from "react";
+import InitialScreen from "./components/wrapper/initial-screen";
 import Root from "./routes/root";
 
 function App() {
-  // const [showInitial, setShowInitial] = useState(false);
-  // useEffect(() => {
-  //   const hasVisited = localStorage.getItem("hasVisited");
+  const [showInitial, setShowInitial] = useState(false);
+  useEffect(() => {
+    const hasVisited = localStorage.getItem("hasVisited");
 
-  //   if (hasVisited !== "true") {
-  //     setShowInitial(true);
-  //     // Set the 'hasVisited' flag in localStorage
-  //     localStorage.setItem("hasVisited", "true");
-  //   }
-  // }, []);
+    if (hasVisited !== "true") {
+      setShowInitial(true);
+      // Set the 'hasVisited' flag in localStorage
+      localStorage.setItem("hasVisited", "true");
+    }
+  }, []);
 
   return (
     <main className="main-screen">
-      {/* {showInitial && <InitialScreen />} */}
+      {showInitial && <InitialScreen />}
       <Root />
     </main>
   );
